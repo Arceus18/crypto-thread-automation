@@ -10,6 +10,11 @@ import fs from 'fs';
 import path from 'path';
 import fetch from 'node-fetch';
 
+console.log('🔧 automation.js is running!');
+console.log('📊 Environment check:');
+console.log('- GEMINI_API_KEY:', process.env.GEMINI_API_KEY ? 'Present' : 'Missing');
+console.log('- TELEGRAM_BOT_TOKEN:', process.env.TELEGRAM_BOT_TOKEN ? 'Present' : 'Missing'); 
+console.log('- TELEGRAM_CHAT_ID:', process.env.TELEGRAM_CHAT_ID ? 'Present' : 'Missing');
 // ===========================
 // CONFIGURATION & INTERFACES
 // ===========================
