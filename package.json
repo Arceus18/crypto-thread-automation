@@ -1,0 +1,18 @@
+{
+  "name": "crypto-thread-automation",
+  "version": "1.0.0",
+  "description": "Automated crypto research and Twitter thread generation with Telegram delivery",
+  "main": "automation.js",
+  "type": "module",
+  "scripts": {
+    "start": "node automation.js",
+    "test": "node automation.js"
+  },
+  "dependencies": {
+    "@google/generative-ai": "^0.21.0",
+    "node-fetch": "^3.3.2"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
