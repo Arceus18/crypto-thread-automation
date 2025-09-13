@@ -62,7 +62,7 @@ jobs:
         node automation.js
         
     - name: 📊 Upload Generated Content
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       if: always()
       with:
         name: crypto-content-$(date +'%Y%m%d_%H%M%S')
