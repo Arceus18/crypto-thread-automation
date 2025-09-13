@@ -1,0 +1,83 @@
+name: Crypto Thread Automation
+
+# Schedule to run daily at 8 AM Pacific Time (3 PM UTC during PST, 4 PM during PDT)
+# Note: GitHub uses UTC, so times will shift with Daylight Saving Time
+on:
+  schedule:
+    # Runs at 15:00 UTC (8:00 AM Pacific Standard Time)
+    # During PDT (Daylight Saving), this is 7:00 AM Pacific
+    - cron: '0 15 * * *'
+  
+  # Allow manual triggering for testing
+  workflow_dispatch:
+    inputs:
+      test_run:
+        description: 'Test run (will not affect scheduling)'
+        required: false
+        default: 'true'
+
+jobs:
+  crypto-automation:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: 📥 Checkout Repository
+      uses: actions/checkout@v4
+      
+    - name: 🟢 Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
+        
+    - name: 📦 Install Dependencies
+      run: npm install
+      
+    - name: 🔧 Verify Environment Variables
+      run: |
+        echo "🔍 Checking required environment variables..."
+        if [ -z "${{ secrets.GEMINI_API_KEY }}" ]; then
+          echo "❌ GEMINI_API_KEY is not set"
+          exit 1
+        fi
+        if [ -z "${{ secrets.TELEGRAM_BOT_TOKEN }}" ]; then
+          echo "❌ TELEGRAM_BOT_TOKEN is not set"
+          exit 1
+        fi
+        if [ -z "${{ secrets.TELEGRAM_CHAT_ID }}" ]; then
+          echo "❌ TELEGRAM_CHAT_ID is not set"
+          exit 1
+        fi
+        echo "✅ All required environment variables are set"
+        
+    - name: 🚀 Run Crypto Automation
+      env:
+        GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+        TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+      run: |
+        echo "🎯 Starting Crypto Thread Automation..."
+        echo "📅 Timestamp: $(date)"
+        echo "🌍 Timezone: $(date +'%Z %z')"
+        node automation.js
+        
+    - name: 📊 Upload Generated Content
+      uses: actions/upload-artifact@v3
+      if: always()
+      with:
+        name: crypto-content-$(date +'%Y%m%d_%H%M%S')
+        path: |
+          generated-images/
+          generated-charts/
+        retention-days: 7
+        
+    - name: 📈 Automation Status
+      if: always()
+      run: |
+        if [ ${{ job.status }} == 'success' ]; then
+          echo "✅ Crypto automation completed successfully!"
+          echo "📱 Check your Telegram for the generated content"
+        else
+          echo "❌ Crypto automation failed"
+          echo "🔍 Check the logs above for error details"
+        fi
