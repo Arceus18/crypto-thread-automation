@@ -193,46 +193,50 @@ async function generateCryptoImages(cryptoData) {
         const color = isPositive ? '#27ae60' : '#e74c3c';
         
         const svgContent = `<svg width="800" height="600" xmlns="http://www.w3.org/2000/svg">
-  <defs>
-    <linearGradient id="bg${i}" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#1a1a2e;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#16213e;stop-opacity:1" />
-    </linearGradient>
-    <linearGradient id="accent${i}" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%" style="stop-color:${color};stop-opacity:0.8" />
-      <stop offset="100%" style="stop-color:${color};stop-opacity:0.4" />
-    </linearGradient>
-  </defs>
+  <!-- Bright background -->
+  <rect width="100%" height="100%" fill="#f8f9fa"/>
   
-  <rect width="100%" height="100%" fill="url(#bg${i})"/>
+  <!-- Header background -->
+  <rect x="0" y="0" width="800" height="100" fill="${color}"/>
   
-  <!-- Main crypto symbol -->
-  <circle cx="400" cy="200" r="80" fill="url(#accent${i})" opacity="0.8"/>
-  <text x="400" y="210" font-family="Arial, sans-serif" font-size="32" fill="white" text-anchor="middle" font-weight="bold">
+  <!-- Main title -->
+  <text x="400" y="35" font-family="Arial, sans-serif" font-size="28" fill="white" text-anchor="middle" font-weight="bold">
+    ${project.name.toUpperCase()} (${project.symbol})
+  </text>
+  <text x="400" y="65" font-family="Arial, sans-serif" font-size="18" fill="white" text-anchor="middle">
+    Crypto Market Analysis
+  </text>
+  
+  <!-- Large symbol circle -->
+  <circle cx="400" cy="220" r="100" fill="${color}" stroke="white" stroke-width="6"/>
+  <text x="400" y="235" font-family="Arial, sans-serif" font-size="40" fill="white" text-anchor="middle" font-weight="bold">
     ${project.symbol}
   </text>
   
-  <!-- Price change indicator -->
-  <rect x="320" y="300" width="160" height="60" rx="10" fill="${color}" opacity="0.9"/>
-  <text x="400" y="325" font-family="Arial, sans-serif" font-size="16" fill="white" text-anchor="middle">
-    24h Change
+  <!-- Price change box -->
+  <rect x="300" y="350" width="200" height="80" rx="15" fill="white" stroke="${color}" stroke-width="4"/>
+  <text x="400" y="375" font-family="Arial, sans-serif" font-size="18" fill="#333" text-anchor="middle">
+    24h Price Change
   </text>
-  <text x="400" y="345" font-family="Arial, sans-serif" font-size="24" fill="white" text-anchor="middle" font-weight="bold">
+  <text x="400" y="405" font-family="Arial, sans-serif" font-size="32" fill="${color}" text-anchor="middle" font-weight="bold">
     ${project.priceChange24h > 0 ? '+' : ''}${project.priceChange24h.toFixed(1)}%
   </text>
   
-  <!-- Decorative elements -->
-  <polygon points="200,450 250,400 300,450 250,500" fill="${color}" opacity="0.6"/>
-  <polygon points="500,450 550,400 600,450 550,500" fill="${color}" opacity="0.6"/>
-  
-  <!-- Title -->
-  <text x="400" y="520" font-family="Arial, sans-serif" font-size="20" fill="#ecf0f1" text-anchor="middle">
-    ${project.name} - ${trend.toUpperCase()} TREND
+  <!-- Trend indicator -->
+  <rect x="350" y="450" width="100" height="40" rx="20" fill="${color}"/>
+  <text x="400" y="475" font-family="Arial, sans-serif" font-size="16" fill="white" text-anchor="middle" font-weight="bold">
+    ${trend.toUpperCase()}
   </text>
   
-  <!-- Crypto branding -->
-  <text x="400" y="550" font-family="Arial, sans-serif" font-size="14" fill="#bdc3c7" text-anchor="middle">
-    Crypto Market Analysis • Generated Content
+  <!-- Decorative arrows -->
+  ${isPositive ? 
+    '<polygon points="150,500 200,450 250,500 200,480" fill="#27ae60"/><polygon points="550,500 600,450 650,500 600,480" fill="#27ae60"/>' : 
+    '<polygon points="150,450 200,500 250,450 200,470" fill="#e74c3c"/><polygon points="550,450 600,500 650,450 600,470" fill="#e74c3c"/>'
+  }
+  
+  <!-- Footer -->
+  <text x="400" y="550" font-family="Arial, sans-serif" font-size="16" fill="#666" text-anchor="middle">
+    Generated for Crypto Twitter Thread • ${new Date().toLocaleDateString()}
   </text>
 </svg>`;
 
